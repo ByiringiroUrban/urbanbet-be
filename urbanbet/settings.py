@@ -153,10 +153,8 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:5173,http://localhost:3000'
-).split(',')
+env_cors = config('CORS_ALLOWED_ORIGINS', default='http://localhost:5173,http://localhost:3000').split(',')
+CORS_ALLOWED_ORIGINS = env_cors + ['https://urbanbett.vercel.app', 'https://urbanbett-7z8zfwosu-urbans-projects-87c0243a.vercel.app']
 
 CORS_ALLOW_CREDENTIALS = True
 
