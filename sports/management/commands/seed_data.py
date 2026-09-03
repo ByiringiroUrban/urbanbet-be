@@ -7,6 +7,7 @@ class Command(BaseCommand):
     help = 'Seed initial data: sports, countries, leagues, events, predictions, casino games'
 
     def handle(self, *args, **kwargs):
+        self._seed_users()
         self._seed_sports()
         self._seed_countries()
         self._seed_leagues()
@@ -16,6 +17,26 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Database seeded successfully.'))
 
     # ------------------------------------------------------------------
+    def _seed_users(self):
+        from users.models import User
+        users_data = [
+            {'email': 'admin@urbanbet.com', 'name': 'Admin User', 'password': 'password123', 'role': User.ADMIN, 'balance': 1000000, 'is_superuser': True, 'is_staff': True},
+            {'email': 'test1@urbanbet.com', 'name': 'Test User 1', 'password': 'password123', 'role': User.USER, 'balance': 50000},
+            {'email': 'test2@urbanbet.com', 'name': 'Test User 2', 'password': 'password123', 'role': User.USER, 'balance': 10000},
+            {'email': 'test3@urbanbet.com', 'name': 'Test User 3', 'password': 'password123', 'role': User.USER, 'balance': 0},
+        ]
+        
+        for data in users_data:
+            email = data.pop('email')
+            password = data.pop('password')
+            is_superuser = data.pop('is_superuser', False)
+            if not User.objects.filter(email=email).exists():
+                if is_superuser:
+                    User.objects.create_superuser(email=email, password=password, **data)
+                else:
+                    User.objects.create_user(email=email, password=password, **data)
+        self.stdout.write('  Users seeded.')
+
     def _seed_sports(self):
         from sports.models import Sport
         sports_data = [

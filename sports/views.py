@@ -123,3 +123,36 @@ def update_event_score(request, pk):
 
     event.save()
     return Response(SportEventDetailSerializer(event).data)
+
+
+class AdminSportCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = SportSerializer
+
+
+class AdminSportUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = SportSerializer
+    queryset = Sport.objects.all()
+
+
+class AdminLeagueCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = LeagueSerializer
+
+
+class AdminLeagueUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = LeagueSerializer
+    queryset = League.objects.all()
+
+
+class AdminCountryCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = CountrySerializer
+
+
+class AdminCountryUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = CountrySerializer
+    queryset = Country.objects.all()
